@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: black;
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form {
+            width: 20rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        textarea {
+            width: 20rem;
+            height: 5rem;
+            background-color: black;
+            color: white;;
+            border: none;
+            border: 2px solid gray;
+            border-radius: 10px;
+        }
+        #messages {
+            margin: 0;
+            padding: 0;
+            width: 50rem;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        #messages * {
+            margin: 0;
+            padding: 0;
+        }
+        p {
+            padding: 0;
+            margin: 5px;
+        }
+    </style>
+    <title>Chatroom</title>
+</head>
+<body>
+    <h1>Eržova četrůma akorát že webovýsukulent</h1>
+    <form onsubmit="event.preventDefault()">
+        <textarea name="msg" id="msg" cols="30" rows="5"></textarea>
+        <button id="send">Send</button>
+    </form>
+    <div class="container">
+        <div id="messages">
+            <p>1</p>
+            <p>2</p>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        // Establish a WebSocket connection when the page loads
+        const websocket = new WebSocket("ws://localhost:7890");
+
+        // Function to handle incoming messages
+        websocket.onmessage = function(event) {
+            const messagesDiv = document.getElementById("messages");
+            messagesDiv.innerHTML = `<p>${event.data}</p><br>` + messagesDiv.innerHTML;
+        };
+
+
+        // Send messages from the form
+        document.getElementById("send").addEventListener("click", function() {
+            const msg = document.getElementById("msg").value;
+            const safeMsg = msg.replace(/(<([^>]+)>)/gi, "");
+            websocket.send(safeMsg);
+            document.getElementById("msg").value = ""; // Clear the input field
+        });
+
+        // Alert user when the server disconnects
+        websocket.onclose = function(event) {
+            alert("Disconnected");
+        };
+    </script>
+</body>
+</html>
