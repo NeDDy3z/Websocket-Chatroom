@@ -65,7 +65,7 @@
 
     <script>
         // Establish a WebSocket connection when the page loads
-        const websocket = new WebSocket("ws://localhost:7890");
+        const websocket = new WebSocket("https://websocket-chatroom-tawny.vercel.app/:7890");
 
         // Function to handle incoming messages
         websocket.onmessage = function(event) {
