@@ -74,6 +74,6 @@ async def echo(websocket, path):
 
 
 # Start the server
-start_server = websockets.serve(echo, "localhost", PORT)
+start_server = websockets.serve(echo, "https://websocket-chatroom-tawny.vercel.app/", PORT)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
